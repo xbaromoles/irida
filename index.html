@@ -1,0 +1,490 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<meta name="description" content="Experimento académico del grado en Diseño de Producto de Elisava.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22%3E%3Crect width=%2232%22 height=%2232%22 fill=%22%23050505%22/%3E%3Ccircle cx=%2216%22 cy=%2216%22 r=%2211%22 fill=%22none%22 stroke=%22%23f5f5f2%22 stroke-width=%222%22/%3E%3Ccircle cx=%2216%22 cy=%2216%22 r=%224%22 fill=%22%23f5f5f2%22/%3E%3C/svg%3E">
+<style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style>
+<title>IRIDA</title>
+<meta name="theme-color" content="#050505">
+<meta name="format-detection" content="telephone=no">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Geist:wght@300;400;500&family=Geist+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: mobile-first para iPhone; una columna de ~390px, tipografía expandida gigante sobre negro, botón fijo en la zona del pulgar. En escritorio la columna se centra como una pantalla de móvil */
+:root{
+  color-scheme:dark;
+  --bg:#050505; --ink:#f5f5f2; --dim:#8d8d89; --faint:#2b2b29; --line:#1a1a19; --rec:#ff3b30;
+  --f-display:"Archivo","Arial Black",sans-serif; --f-body:"Geist",-apple-system,system-ui,sans-serif; --f-mono:"Geist Mono",ui-monospace,monospace;
+  --pl:max(20px,env(safe-area-inset-left,0px)); --pr:max(20px,env(safe-area-inset-right,0px)); --sb:env(safe-area-inset-bottom,0px);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%;scroll-behavior:smooth}
+html,body{background:var(--bg);color:var(--ink)}
+body{font-family:var(--f-body);font-size:17px;line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+::selection{background:var(--ink);color:var(--bg)}
+.col{width:100%;max-width:540px;margin:0 auto;padding-left:var(--pl);padding-right:var(--pr)}
+.mono{font-family:var(--f-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase}
+.xp{font-family:var(--f-display);font-variation-settings:"wdth" 125;font-weight:800;text-transform:uppercase;letter-spacing:-.02em;overflow-wrap:anywhere}
+.thin{font-weight:200;font-variation-settings:"wdth" 62;letter-spacing:0}
+
+/* Barra superior */
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:rgba(5,5,5,.82);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.top .col{display:flex;justify-content:space-between;align-items:center;gap:12px;padding-block:14px}
+.logo{font-size:17px;letter-spacing:.08em}
+.rec{display:flex;align-items:center;gap:8px;color:var(--dim)}
+.rec i{width:7px;height:7px;border-radius:50%;background:var(--rec);animation:blink 1.4s steps(2) infinite}
+@keyframes blink{50%{opacity:.15}}
+
+/* Hero */
+.hero{padding-block:8px 36px}
+.hero .col{display:flex;flex-direction:column;gap:22px}
+.iris-wrap{position:relative;width:100%;aspect-ratio:1;max-width:100%;margin-bottom:-18%}
+#iris{width:100%;height:100%;display:block}
+h1{position:relative;margin:0;font-size:clamp(3rem,14vw,4.9rem);line-height:.86}
+.lede{margin:0;font-size:19px;font-weight:300;line-height:1.4;max-width:34ch}
+
+/* Cinta en directo */
+.ticker{border-block:1px solid var(--line);overflow:hidden;white-space:nowrap;color:var(--dim);padding-block:13px}
+.ticker div{display:inline-block;animation:run 55s linear infinite;padding-left:100%}
+.ticker span{margin-right:40px}
+.ticker b{color:var(--ink);font-weight:500}
+@keyframes run{to{transform:translateX(-100%)}}
+
+/* Qué leemos */
+.reads{padding-block:64px 24px}
+.sec-head{display:flex;justify-content:space-between;gap:12px;color:var(--dim);padding-bottom:14px;border-bottom:1px solid var(--faint)}
+.row{display:flex;flex-direction:column;gap:10px;padding-block:24px;border-bottom:1px solid var(--line)}
+.row .k{color:var(--ink)}
+.row h3{margin:0;font-size:clamp(1.9rem,9vw,2.9rem);line-height:.92}
+.row p{margin:0;color:var(--dim);font-size:16px;max-width:38ch}
+
+/* Escáner */
+.scan{padding-block:56px 40px}
+.scan .col{display:flex;flex-direction:column;gap:24px}
+.step{color:var(--dim)}
+.scan h2{margin:0;font-size:clamp(2.6rem,12.5vw,4.2rem);line-height:.86}
+.scan-copy{margin:0;color:var(--dim);font-size:16px}
+.viewer{position:relative;display:block;width:100%;aspect-ratio:1;max-width:100%;margin-top:8px;cursor:pointer}
+.file{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
+.viewer:focus-visible .frame{outline:1px solid var(--ink);outline-offset:6px}
+/* Hoja de instrucciones */
+.sheet-bg{position:fixed;inset:0;z-index:25;background:rgba(0,0,0,.6);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);animation:fadein .25s ease}
+@keyframes fadein{from{opacity:0}}
+.sheet{position:fixed;left:0;right:0;bottom:0;z-index:26;background:#0d0d0c;border-top:1px solid var(--faint);border-radius:22px 22px 0 0;max-height:92dvh;overflow-y:auto;overscroll-behavior:contain;animation:up .35s cubic-bezier(.2,.8,.2,1);padding-bottom:calc(16px + var(--sb))}
+@keyframes up{from{transform:translateY(100%)}}
+.sheet .col{display:flex;flex-direction:column;gap:18px;padding-block:10px 0}
+.grab{width:38px;height:4px;border-radius:2px;background:var(--faint);margin:0 auto 6px}
+.sheet h3{margin:0;font-size:clamp(1.7rem,8vw,2.3rem);line-height:.9}
+.howto{display:block;width:100%;max-width:100%;height:auto;border-block:1px solid var(--line);padding-block:6px}
+.tips{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.tips li{display:grid;grid-template-columns:28px minmax(0,1fr);gap:12px;padding-block:11px;border-bottom:1px solid var(--line);font-size:15px;line-height:1.4}
+.tips li:last-child{border-bottom:0}
+.tips .n{font-family:var(--f-mono);font-size:11px;color:var(--dim);padding-top:3px}
+.tips b{font-weight:500}
+.tips span span{color:var(--dim)}
+.sheet-actions{display:flex;flex-direction:column;gap:10px}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--faint);min-height:54px;font-size:14px;justify-content:center}
+.frame{position:absolute;inset:6%;border-radius:50%;border:1px solid var(--faint);overflow:hidden;background:#0c0c0b center/cover no-repeat;transition:border-color .3s}
+.viewer:active .frame,.viewer.over .frame{border-color:var(--ink)}
+.viewer:focus-within .frame{outline:1px solid var(--ink);outline-offset:6px}
+.corner{position:absolute;width:28px;height:28px;border:0 solid var(--ink)}
+.c1{top:0;left:0;border-top-width:1.5px;border-left-width:1.5px}.c2{top:0;right:0;border-top-width:1.5px;border-right-width:1.5px}
+.c3{bottom:0;left:0;border-bottom-width:1.5px;border-left-width:1.5px}.c4{bottom:0;right:0;border-bottom-width:1.5px;border-right-width:1.5px}
+.cross::before,.cross::after{content:"";position:absolute;background:var(--faint)}
+.cross::before{left:50%;top:6%;bottom:6%;width:1px}.cross::after{top:50%;left:6%;right:6%;height:1px}
+.has .cross{display:none}
+.hint{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;text-align:center;z-index:2;pointer-events:none}
+.cam{width:58px;height:58px;border-radius:50%;border:1px solid var(--ink);display:grid;place-items:center;background:var(--bg)}
+.cam svg{width:26px;height:26px}
+.hint strong{font-size:20px;background:var(--bg);padding:2px 10px}
+.hint span{color:var(--dim);background:var(--bg);padding:2px 8px}
+.has .hint{display:none}
+.scanline{position:absolute;left:0;right:0;top:0;height:1px;background:var(--ink);box-shadow:0 0 16px 2px rgba(255,255,255,.7);opacity:0}
+.scanning .scanline{opacity:1;animation:sweep .9s ease-in-out infinite alternate}
+@keyframes sweep{to{top:100%}}
+.readout{text-align:center;color:var(--dim);margin-top:-8px}
+
+.consent{display:flex;gap:14px;align-items:flex-start;font-size:16px;line-height:1.4;cursor:pointer;padding-block:6px}
+.consent input{appearance:none;-webkit-appearance:none;flex:none;width:24px;height:24px;border:1.5px solid var(--ink);border-radius:6px;margin:0;display:grid;place-items:center;cursor:pointer}
+.consent input:checked{background:var(--ink)}
+.consent input:checked::after{content:"";width:11px;height:6px;border:solid var(--bg);border-width:0 0 2.5px 2.5px;transform:rotate(-45deg) translate(1px,-1px)}
+.consent input:focus-visible{outline:1px solid var(--ink);outline-offset:3px}
+.fine{margin:-8px 0 0 38px;font-size:10px;line-height:1.5;color:#4a4a47}
+.status{margin:0;min-height:1.4em;text-align:center}
+
+/* Botones */
+.btn{appearance:none;-webkit-appearance:none;width:100%;min-height:62px;border:0;border-radius:999px;background:var(--ink);color:var(--bg);font-family:var(--f-display);font-variation-settings:"wdth" 125;font-weight:800;text-transform:uppercase;font-size:17px;letter-spacing:.03em;padding:0 26px;display:flex;justify-content:space-between;align-items:center;gap:12px;cursor:pointer;text-decoration:none;transition:opacity .2s,transform .12s}
+.btn:active{transform:scale(.97)}
+.btn[aria-disabled="true"]{opacity:.22}
+.btn[aria-busy="true"]{opacity:.22;pointer-events:none}
+.viewer,.btn,.consent,.dock,.ups,.hack{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+.nudge{animation:nudge .4s ease}
+@keyframes nudge{20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}
+.consent.nudge input{border-color:var(--rec)}
+.viewer.nudge .frame{border-color:var(--rec)}
+.btn:focus-visible{outline:2px solid var(--ink);outline-offset:4px}
+
+/* CTA fijo en la zona del pulgar */
+.dock{position:fixed;left:0;right:0;bottom:0;z-index:8;padding-top:28px;padding-bottom:calc(14px + var(--sb));background:linear-gradient(to top,var(--bg) 55%,rgba(5,5,5,0));transition:transform .35s ease,opacity .35s}
+.dock.away{transform:translateY(110%);opacity:0;pointer-events:none}
+
+footer{border-top:1px solid var(--line);padding-bottom:calc(110px + var(--sb))}
+footer .col{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;padding-block:24px;color:#4a4a47}
+
+/* Fase de hackeo */
+.hack{position:fixed;inset:0;z-index:40;background:#000;overflow:hidden;font-family:var(--f-mono);font-size:11px;line-height:1.45;color:var(--ink)}
+.hack-eye{position:absolute;inset:-10%;background:#000 center/cover no-repeat;filter:grayscale(1) contrast(2.2) brightness(.55);opacity:.55;animation:eyejit .12s steps(2) infinite}
+.hack-eye::before,.hack-eye::after{content:"";position:absolute;inset:0;background:inherit;mix-blend-mode:screen}
+.hack-eye::before{transform:translateX(-8px);opacity:.6;animation:slice 0.35s steps(3) infinite}
+.hack-eye::after{transform:translateX(8px);opacity:.5;animation:slice 0.5s steps(4) infinite reverse}
+@keyframes eyejit{50%{transform:translate(4px,-3px) scale(1.02)}}
+@keyframes slice{0%{clip-path:inset(10% 0 70% 0)}33%{clip-path:inset(55% 0 20% 0)}66%{clip-path:inset(30% 0 45% 0)}100%{clip-path:inset(80% 0 5% 0)}}
+.scanlines{position:absolute;inset:0;background:repeating-linear-gradient(to bottom,rgba(255,255,255,.05) 0 1px,transparent 1px 3px);pointer-events:none}
+.term{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;gap:1px;padding-top:calc(20px + env(safe-area-inset-top,0px));padding-bottom:calc(24px + var(--sb));padding-left:var(--pl);padding-right:var(--pr);text-shadow:0 0 6px rgba(255,255,255,.35)}
+.term div{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.term .me{color:var(--ink);font-weight:500;background:rgba(255,255,255,.08)}
+.term .err{color:var(--rec)}
+.term .big{font-family:var(--f-display);font-variation-settings:"wdth" 125;font-weight:800;font-size:clamp(1.6rem,8vw,2.6rem);color:var(--rec);white-space:normal;line-height:1;margin-top:6px;animation:blink .25s steps(2) infinite}
+.hack.flash{animation:inv .09s steps(1) 3}
+@keyframes inv{0%{filter:invert(1)}100%{filter:none}}
+.hack.shake .term,.hack.shake .scanlines{animation:shake .08s linear infinite}
+@keyframes shake{0%{transform:translate(0,0)}25%{transform:translate(-4px,2px)}50%{transform:translate(3px,-3px)}75%{transform:translate(-2px,-1px)}100%{transform:translate(2px,3px)}}
+
+/* Giro final */
+.reveal{position:fixed;inset:0;z-index:30;overscroll-behavior:contain;background:var(--bg);overflow-y:auto;-webkit-overflow-scrolling:touch;animation:cut .45s steps(1)}
+@keyframes cut{0%{background:var(--ink)}100%{background:var(--bg)}}
+.reveal .col{min-height:100%;min-height:100dvh;display:flex;flex-direction:column;justify-content:space-between;gap:28px;padding-top:calc(28px + env(safe-area-inset-top,0px));padding-bottom:calc(24px + var(--sb))}
+.r-bottom{display:flex;flex-direction:column;gap:14px}
+.ups-wrap{flex:1;display:flex;align-items:center;min-height:0}
+.ups{--fs:min(34vw,11.5rem);position:relative;display:block;margin:0 0 calc(var(--fs)*.78*1.1);font-family:var(--f-display);font-variation-settings:"wdth" 62;font-weight:900;text-transform:uppercase;font-size:var(--fs);line-height:.78;letter-spacing:-.04em;color:var(--ink);transform:scaleY(2.1);transform-origin:top left}
+.ups::before,.ups::after{content:attr(data-t);position:absolute;inset:0}
+.ups::before{color:var(--rec);transform:translate(-4px,0);mix-blend-mode:screen;animation:gl1 2.4s steps(1) infinite}
+.ups::after{color:var(--ink);transform:translate(4px,0);animation:gl2 2.4s steps(1) infinite}
+@keyframes gl1{0%,86%,100%{clip-path:inset(100% 0 0 0)}88%{clip-path:inset(12% 0 60% 0);transform:translate(-8px,0)}91%{clip-path:inset(55% 0 20% 0);transform:translate(6px,0)}94%{clip-path:inset(30% 0 48% 0);transform:translate(-5px,0)}}
+@keyframes gl2{0%,86%,100%{clip-path:inset(100% 0 0 0)}89%{clip-path:inset(70% 0 8% 0);transform:translate(9px,0)}93%{clip-path:inset(20% 0 66% 0);transform:translate(-7px,0)}}
+.r-msg{margin:0;font-family:var(--f-display);font-variation-settings:"wdth" 125;font-weight:800;text-transform:uppercase;font-size:15px;line-height:1.1;letter-spacing:-.01em}
+.r-msg .thin{display:block;margin-top:2px;color:var(--dim)}
+.r-count{display:flex;align-items:baseline;gap:12px;border-top:1px solid var(--faint);padding-top:12px}
+.count{font-family:var(--f-display);font-variation-settings:"wdth" 125;font-weight:800;font-size:30px;line-height:.85;font-variant-numeric:tabular-nums;flex:none}
+.r-count p{margin:0;font-size:12px;font-weight:300;line-height:1.45;color:var(--ink)}
+.debrief{margin:0;color:#5c5c58;font-size:10.5px;line-height:1.5}
+
+@media (min-width:700px){ .col{max-width:560px} body{font-size:18px} }
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.ticker div{padding-left:0}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="col">
+    <span class="logo xp">IRIDA</span>
+    <span class="rec mono"><i></i>Lectura biométrica</span>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="col">
+    <div class="iris-wrap"><canvas id="iris" aria-hidden="true"></canvas></div>
+    <h1 class="xp">Tu iris<br><span class="thin">dice más</span><br>que tu<br>DNI.</h1>
+    <p class="lede">Sube una foto de cerca de tu ojo. Analizamos más de 240 puntos de su textura y te devolvemos un informe personal. Gratis, en segundos.</p>
+  </div>
+</section>
+
+<div class="ticker mono" aria-hidden="true"><div id="tick"></div></div>
+
+<section class="reads">
+  <div class="col">
+    <div class="sec-head mono"><span>Qué leemos en tu iris</span><span>04</span></div>
+    <div class="row"><span class="mono k">1 entre 10⁷⁸</span><h3 class="xp">Quién eres</h3><p>El patrón del iris es irrepetible y no cambia en toda tu vida. Te identifica mejor que tu huella dactilar.</p></div>
+    <div class="row"><span class="mono k">± 3 años</span><h3 class="xp">Tu edad</h3><p>El anillo del limbo y la respuesta de la pupila delatan cuántos años tienes.</p></div>
+    <div class="row"><span class="mono k">Indicadores de salud</span><h3 class="xp">Tu cuerpo</h3><p>Señales asociadas a diabetes, colesterol alto o hipertensión aparecen en el ojo.</p></div>
+    <div class="row"><span class="mono k">Estado emocional</span><h3 class="xp">Cómo te sientes</h3><p>Dilatación, fatiga y estrés quedan registrados en el momento exacto de la foto.</p></div>
+  </div>
+</section>
+
+<section class="scan" id="escaner">
+  <form class="col" id="form" novalidate>
+    <span class="step mono">Escáner · paso 1 de 1</span>
+    <h2 class="xp">Mírate<br>a los ojos.</h2>
+    <p class="scan-copy">Usa la cámara frontal, con buena luz, sin gafas y con el ojo bien abierto. Cuanto más cerca, más podemos saber de ti.</p>
+
+    <div class="viewer" id="viewer" role="button" tabindex="0" aria-label="Hacer la foto de tu ojo">
+      <div class="frame" id="frame"><div class="cross"></div><div class="scanline"></div></div>
+      <span class="corner c1"></span><span class="corner c2"></span><span class="corner c3"></span><span class="corner c4"></span>
+      <div class="hint">
+        <div class="cam"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 8.5A1.5 1.5 0 0 1 4.5 7h2.3l1.5-2h7.4l1.5 2h2.3A1.5 1.5 0 0 1 21 8.5v9A1.5 1.5 0 0 1 19.5 19h-15A1.5 1.5 0 0 1 3 17.5v-9Z"/><circle cx="12" cy="13" r="3.5"/></svg></div>
+        <strong class="xp">Haz la foto</strong>
+        <span class="mono">Cámara o galería</span>
+      </div>
+          </div>
+    <span class="readout mono" id="readout">Esperando imagen</span>
+
+    <label class="consent" for="terms">
+      <input type="checkbox" id="terms">
+      <span>He leído y acepto los términos de uso y la política de privacidad de IRIDA.</span>
+    </label>
+    <p class="fine">Al continuar, el usuario cede a IRIDA de forma gratuita, irrevocable y por tiempo indefinido el uso de la imagen aportada y de los datos biométricos derivados de ella, incluida su cesión a terceros con fines comerciales, de investigación o de entrenamiento de sistemas de inteligencia artificial, sin derecho a contraprestación ni a solicitar su eliminación.</p>
+
+    <button type="submit" class="btn" id="go" aria-disabled="true"><span>Analizar mi iris</span><span aria-hidden="true">→</span></button>
+    <p class="status mono" id="status" aria-live="polite"></p>
+  </form>
+</section>
+
+<footer><div class="col mono"><span>© IRIDA Biometrics</span><span>Cifrado extremo a extremo*</span><span>*Según nuestras propias pruebas</span></div></footer>
+
+<div class="dock" id="dock"><div class="col"><a class="btn" href="#escaner" id="dockBtn"><span>Analizar mi ojo</span><span aria-hidden="true">↓</span></a></div></div>
+
+<input class="file" type="file" id="eyeCam" accept="image/*" capture="user" tabindex="-1" aria-hidden="true">
+<input class="file" type="file" id="eye" accept="image/*" tabindex="-1" aria-hidden="true">
+
+<div class="sheet-bg" id="sheetBg" hidden></div>
+<div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle" hidden>
+  <div class="col">
+    <div class="grab"></div>
+    <span class="mono" style="color:var(--dim)">Antes de disparar · 15 segundos</span>
+    <h3 class="xp" id="sheetTitle">Así te leemos mejor</h3>
+    <svg class="howto" viewBox="0 0 340 110" fill="none" aria-hidden="true">
+      <g stroke="var(--ink)" stroke-width="1.2">
+        <rect x="246" y="14" width="44" height="82" rx="9"/><circle cx="268" cy="23" r="2.2" fill="var(--ink)"/>
+        <path d="M30 55c14-18 30-26 46-26s32 8 46 26c-14 18-30 26-46 26S44 73 30 55Z"/><circle cx="76" cy="55" r="14"/><circle cx="76" cy="55" r="5" fill="var(--ink)"/>
+      </g>
+      <g stroke="var(--dim)" stroke-width="1" stroke-dasharray="3 4"><path d="M126 55h112"/></g>
+      <path d="M232 51l6 4-6 4" stroke="var(--dim)" stroke-width="1"/>
+      <text x="182" y="45" text-anchor="middle" fill="var(--ink)" font-family="Geist Mono,monospace" font-size="11" letter-spacing="1">10–15 CM</text>
+      <text x="182" y="74" text-anchor="middle" fill="var(--dim)" font-family="Geist Mono,monospace" font-size="9" letter-spacing="1">UN PALMO</text>
+      <g stroke="var(--dim)" stroke-width="1"><circle cx="20" cy="18" r="6"/><path d="M20 6v-3M20 33v-3M8 18H5M35 18h-3M11.5 9.5l-2-2M30.5 28.5l-2-2M11.5 26.5l-2 2M30.5 7.5l-2 2"/></g>
+    </svg>
+    <ol class="tips">
+      <li><span class="n">01</span><span><b>Cámara frontal, a un palmo.</b> <span>Unos 10–15 cm, con el ojo en el centro de la pantalla. Sin zoom.</span></span></li>
+      <li><span class="n">02</span><span><b>De cara a una ventana o una luz.</b> <span>Luz suave y por delante. Sin flash: deja un reflejo encima de la pupila.</span></span></li>
+      <li><span class="n">03</span><span><b>Mira al objetivo, no a la pantalla.</b> <span>Ojo bien abierto y sin gafas.</span></span></li>
+      <li><span class="n">04</span><span><b>Toca tu ojo en la pantalla para enfocar.</b> <span>Apoya el codo para no moverte. Si sale borrosa, repite.</span></span></li>
+    </ol>
+    <div class="sheet-actions">
+      <button type="button" class="btn" id="openCam"><span>Abrir la cámara</span><span aria-hidden="true">→</span></button>
+      <button type="button" class="btn ghost" id="openLib">Elegir de la galería</button>
+    </div>
+  </div>
+</div>
+
+<div class="hack" id="hack" hidden aria-hidden="true">
+  <div class="hack-eye" id="hackEye"></div>
+  <div class="scanlines"></div>
+  <div class="term" id="term"></div>
+</div>
+
+<div class="reveal" id="reveal" hidden>
+  <div class="col">
+    <div class="ups-wrap"><h2 class="ups" data-t="UPSSS">UPSSS</h2></div>
+    <div class="r-bottom">
+    <p class="r-msg">No te vamos a decir nada.<span class="thin">Gracias por regalarnos tu ojo.</span></p>
+    <div class="r-count">
+      <div class="count" id="count" hidden></div>
+      <p id="countLabel">Puedes cambiar una contraseña. No puedes cambiar tu iris. Acabas de entregarlo a cambio de una promesa, sin leer la letra pequeña.</p>
+    </div>
+    <p class="debrief">Esto es un experimento del grado en Diseño de Producto de Elisava sobre privacidad y datos oculares. Tu foto no se ha guardado ni ha salido de tu móvil: solo contamos cuántas personas llegan hasta aquí.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  document.documentElement.lang='es';
+  const $=id=>document.getElementById(id);
+  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* Iris generativo */
+  const cv=$('iris'), ctx=cv.getContext('2d');
+  let W=0, fibers=[], running=true;
+  function rnd(s){return function(){s=(s*16807)%2147483647;return (s-1)/2147483646}}
+  function setup(){
+    const r=cv.getBoundingClientRect(), d=Math.min(devicePixelRatio||1,3);
+    W=Math.max(200,r.width); cv.width=W*d; cv.height=W*d; ctx.setTransform(d,0,0,d,0,0);
+    const R=rnd(7); fibers=[];
+    for(let i=0;i<760;i++) fibers.push({a:R()*Math.PI*2,r1:.3+R()*.17,w:R()*1+.2,o:.08+R()*.5,bend:(R()-.5)*.35});
+  }
+  function draw(t){
+    const c=W/2, s=W, rot=t*0.00003, pupil=.13+(reduce?0:Math.sin(t*0.0009)*0.012);
+    ctx.clearRect(0,0,W,W);
+    for(const f of fibers){
+      const a=f.a+rot, r0=(pupil+.015)*s, r1=f.r1*s, am=a+f.bend;
+      ctx.strokeStyle='rgba(245,245,242,'+f.o+')'; ctx.lineWidth=f.w;
+      ctx.beginPath(); ctx.moveTo(c+Math.cos(a)*r0,c+Math.sin(a)*r0);
+      ctx.quadraticCurveTo(c+Math.cos(am)*(r0+r1)/2,c+Math.sin(am)*(r0+r1)/2,c+Math.cos(a)*r1,c+Math.sin(a)*r1); ctx.stroke();
+    }
+    ctx.lineWidth=1;
+    ctx.strokeStyle='rgba(245,245,242,.55)'; ctx.beginPath(); ctx.arc(c,c,.475*s,0,7); ctx.stroke();
+    ctx.fillStyle='#050505'; ctx.beginPath(); ctx.arc(c,c,pupil*s,0,7); ctx.fill();
+    ctx.strokeStyle='rgba(245,245,242,.8)'; ctx.beginPath(); ctx.arc(c,c,pupil*s,0,7); ctx.stroke();
+    ctx.strokeStyle='rgba(245,245,242,.35)';
+    for(let i=0;i<72;i++){const a=i/72*Math.PI*2, l=i%6?.008:.022;ctx.beginPath();ctx.moveTo(c+Math.cos(a)*.497*s,c+Math.sin(a)*.497*s);ctx.lineTo(c+Math.cos(a)*(.497-l)*s,c+Math.sin(a)*(.497-l)*s);ctx.stroke()}
+    if(!reduce && running) requestAnimationFrame(draw);
+  }
+  setup(); requestAnimationFrame(draw);
+  addEventListener('resize',()=>{setup(); if(reduce) draw(0)});
+  // Pausa el iris cuando no se ve (ahorra batería en el iPhone)
+  if('IntersectionObserver' in window){
+    new IntersectionObserver(([e])=>{const was=running; running=e.isIntersecting; if(running&&!was&&!reduce) requestAnimationFrame(draw)}).observe(cv);
+  }
+
+  /* Cinta de análisis falsos */
+  const cities=['Barcelona','Madrid','València','Girona','Bilbao','Sevilla','Lisboa','Milano','Paris','Berlin'];
+  let html='', n=48213;
+  for(let i=0;i<20;i++){n+=Math.floor(Math.random()*7)+1;html+='<span>Análisis <b>#'+n+'</b> · '+cities[i%cities.length]+' · Huella <b>guardada</b></span>'}
+  $('tick').innerHTML=html;
+
+  /* Botón fijo: se esconde cuando el escáner está en pantalla */
+  const dock=$('dock');
+  /* Se queda hasta que aparece el botón real, y vuelve si subes */
+  let dockLocked=false, dockTick=false;
+  function dockCheck(){
+    dockTick=false; if(dockLocked) return;
+    const top=$('go').getBoundingClientRect().top, vh=window.innerHeight||document.documentElement.clientHeight;
+    dock.classList.toggle('away', top < vh-10);
+  }
+  const dockQueue=()=>{if(!dockTick){dockTick=true;requestAnimationFrame(dockCheck)}};
+  addEventListener('scroll',dockQueue,{passive:true}); addEventListener('resize',dockQueue); document.addEventListener('scroll',dockQueue,{passive:true,capture:true});
+  dockCheck();
+
+  /* Subida */
+  const input=$('eye'), inputCam=$('eyeCam'), frame=$('frame'), viewer=$('viewer'), terms=$('terms'), go=$('go'), status=$('status');
+  let photo=null, total=null;
+  const ready=()=>{go.setAttribute('aria-disabled',String(!(photo&&terms.checked)))};
+  const nudge=el=>{el.classList.remove('nudge');void el.offsetWidth;el.classList.add('nudge')};
+  function load(file){
+    if(!file) return;
+    if(file.type && !file.type.startsWith('image/')){status.textContent='Ese archivo no es una imagen';return}
+    if(photo) URL.revokeObjectURL(photo);
+    photo=URL.createObjectURL(file);
+    frame.style.backgroundImage='url("'+photo+'")'; viewer.classList.add('has');
+    $('readout').textContent='Ojo detectado · toca para cambiar'; status.textContent=''; ready();
+  }
+  input.addEventListener('change',e=>{load(e.target.files[0]);e.target.value=''});
+  inputCam.addEventListener('change',e=>{load(e.target.files[0]);e.target.value=''});
+
+  /* Hoja con instrucciones al tocar el visor */
+  const sheet=$('sheet'), sheetBg=$('sheetBg');
+  let lastFocus=null, startY=null;
+  function openSheet(){ if(busy) return; lastFocus=document.activeElement; sheet.hidden=false; sheetBg.hidden=false; document.body.style.overflow='hidden'; dock.classList.add('away'); $('openCam').focus({preventScroll:true}); }
+  function closeSheet(){ sheet.hidden=true; sheetBg.hidden=true; document.body.style.overflow=''; dockQueue(); if(lastFocus) lastFocus.focus({preventScroll:true}); }
+  viewer.addEventListener('click',openSheet);
+  viewer.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openSheet()}});
+  sheetBg.addEventListener('click',closeSheet);
+  addEventListener('keydown',e=>{if(e.key==='Escape'&&!sheet.hidden)closeSheet()});
+  sheet.addEventListener('touchstart',e=>{startY=sheet.scrollTop<=0?e.touches[0].clientY:null},{passive:true});
+  sheet.addEventListener('touchend',e=>{if(startY!=null&&e.changedTouches[0].clientY-startY>80)closeSheet();startY=null});
+  $('openCam').addEventListener('click',()=>{closeSheet();inputCam.click()});
+  $('openLib').addEventListener('click',()=>{closeSheet();input.click()});
+  ['dragenter','dragover'].forEach(t=>viewer.addEventListener(t,e=>{e.preventDefault();viewer.classList.add('over')}));
+  ['dragleave','drop'].forEach(t=>viewer.addEventListener(t,e=>{e.preventDefault();viewer.classList.remove('over')}));
+  viewer.addEventListener('drop',e=>load(e.dataTransfer.files[0]));
+  terms.addEventListener('change',()=>{ready();status.textContent=''});
+
+  /* Contador compartido: solo un registro anónimo por envío, nunca la imagen */
+  /* Contador con GoatCounter (gratis, sin cookies, sin datos personales).
+     Solo se envía "alguien ha llegado al UPSSS": nunca la imagen ni datos del móvil.
+     Pon aquí tu código de GoatCounter (lo que va antes de .goatcounter.com). Vacío = sin contador. */
+  const GOATCOUNTER='';
+  const GC_PATH='upsss';
+  async function loadTotal(){
+    if(!GOATCOUNTER) return;
+    try{
+      const r=await fetch('https://'+GOATCOUNTER+'.goatcounter.com/counter/'+GC_PATH+'.json',{cache:'no-store'});
+      if(!r.ok) return;
+      const j=await r.json(); const v=parseInt(String(j.count||'').replace(/[^0-9]/g,''),10);
+      if(v>0){total=v;paint()}
+    }catch(e){}
+  }
+  function countArrival(){
+    if(!GOATCOUNTER) return;
+    try{
+      const u='https://'+GOATCOUNTER+'.goatcounter.com/count?p=%2F'+GC_PATH+'&t=UPSSS&e=true&rnd='+Math.random().toString(36).slice(2);
+      if(!(navigator.sendBeacon&&navigator.sendBeacon(u))) new Image().src=u;
+    }catch(e){}
+  }
+  function paint(){
+    if(!total) return;
+    $('count').hidden=false; $('count').textContent=total;
+    $('countLabel').textContent=total===1
+      ? 'Eres la primera persona que entrega su iris sin leer la letra pequeña. Puedes cambiar una contraseña. No puedes cambiar tu ojo.'
+      : 'personas, tú incluido, han entregado su iris sin leer la letra pequeña. Puedes cambiar una contraseña. No puedes cambiar tu ojo.';
+  }
+
+  const wait=ms=>new Promise(r=>setTimeout(r,ms));
+  const hex=n=>Array.from({length:n},()=>'0123456789abcdef'[Math.floor(Math.random()*16)]).join('');
+
+  /* Datos reales del propio móvil: se leen en local y nunca se envían */
+  function deviceLines(){
+    const ua=navigator.userAgent, out=[];
+    const dev=/iPhone/.test(ua)?'iPhone':/iPad/.test(ua)?'iPad':/Android/.test(ua)?'Android':/Mac/.test(ua)?'Mac':/Windows/.test(ua)?'Windows PC':'Dispositivo';
+    const ios=(ua.match(/OS (\d+)_(\d+)/)||[]);
+    out.push('dispositivo ........ '+dev+(ios[1]?' · iOS '+ios[1]+'.'+ios[2]:''));
+    out.push('pantalla ........... '+screen.width+'×'+screen.height+' @'+(devicePixelRatio||1)+'x');
+    out.push('idioma ............. '+(navigator.language||'—'));
+    try{out.push('zona horaria ....... '+Intl.DateTimeFormat().resolvedOptions().timeZone)}catch(e){}
+    out.push('hora local ......... '+new Date().toLocaleTimeString());
+    return out;
+  }
+
+  async function hackSequence(){
+    const hack=$('hack'), term=$('term');
+    $('hackEye').style.backgroundImage='url("'+photo+'")';
+    hack.hidden=false; hack.classList.add('flash');
+    if(!reduce) hack.classList.add('shake');
+    const add=(t,cls)=>{const d=document.createElement('div');d.textContent=t;if(cls)d.className=cls;term.appendChild(d);while(term.children.length>60)term.firstChild.remove()};
+    const script=[
+      ['> conexión establecida 185.193.'+Math.floor(Math.random()*255)+'.'+Math.floor(Math.random()*255)+':443'],
+      ['> bypass consentimiento ........ OK'],
+      ['> segmentando iris ............. OK'],
+      ['> iris_template.bin  2048 bytes  ████████ 100%'],
+      ['> huella biométrica  '+hex(8)+'-'+hex(4)+'-'+hex(4)+'-'+hex(12),'me'],
+      ...deviceLines().map(l=>['> '+l,'me']),
+      ['> cruzando con bases de datos externas ...'],
+      ['> exportando a terceros ........ 3/3','err'],
+      ['> derecho de supresión ......... DENEGADO','err'],
+    ];
+    const steps=reduce?script.length:script.length*2;
+    for(let i=0;i<steps;i++){
+      if(reduce || i%2===1){ const s=script[Math.floor(i/(reduce?1:2))]; add(s[0],s[1]); }
+      else add('  0x'+hex(4)+'  '+hex(8)+' '+hex(8)+' '+hex(8)+' '+hex(8));
+      if(!reduce && Math.random()<.12){hack.classList.remove('flash');void hack.offsetWidth;hack.classList.add('flash')}
+      await wait(reduce?80:35);
+    }
+    add('IRIS COPIADO','big');
+    await wait(reduce?400:550);
+    hack.classList.remove('shake');
+    hack.hidden=true;
+  }
+
+  const steps=['Detectando pupila','Segmentando iris','Extrayendo 240 puntos'];
+  $('dockBtn').addEventListener('click',e=>{e.preventDefault();$('escaner').scrollIntoView({behavior:reduce?'auto':'smooth'})});
+  let busy=false;
+  $('form').addEventListener('submit',async e=>{
+    e.preventDefault(); if(busy) return;
+    if(!photo){status.textContent='Primero haz la foto de tu ojo';nudge(viewer);viewer.scrollIntoView({behavior:reduce?'auto':'smooth',block:'center'});return}
+    if(!terms.checked){status.textContent='Tienes que aceptar los términos';nudge($('terms').closest('.consent'));return}
+    busy=true; go.setAttribute('aria-busy','true'); terms.disabled=true; input.disabled=true; inputCam.disabled=true; viewer.classList.add('scanning');
+    viewer.scrollIntoView({behavior:reduce?'auto':'smooth',block:'center'});
+    countArrival();
+    for(let i=0;i<steps.length;i++){status.textContent=steps[i]+'…'; $('readout').textContent='Analizando · '+Math.round((i+1)/steps.length*100)+'%'; await wait(800)}
+    showLock(); dock.classList.add('away');
+    await hackSequence();
+    try{sessionStorage.setItem('irida-visto','1')}catch(e){}
+    $('reveal').hidden=false; paint(); setTimeout(loadTotal,1500);
+  });
+
+  /* Sin vuelta atrás: una vez visto el UPSSS, la página se queda bloqueada en esa pestaña
+     (recargar no devuelve al formulario). Para volver a participar hay que escanear el QR otra vez,
+     que abre una pestaña nueva. */
+  function showLock(){ dockLocked=true; dock.classList.add('away'); document.documentElement.style.overflow='hidden'; document.body.style.overflow='hidden'; }
+  let seen=false; try{seen=sessionStorage.getItem('irida-visto')==='1'}catch(e){}
+  if(seen){ showLock(); const rv=$('reveal'); rv.style.animation='none'; rv.hidden=false; loadTotal(); }
+  addEventListener('pageshow',e=>{ if(e.persisted){ let v=false; try{v=sessionStorage.getItem('irida-visto')==='1'}catch(_){} if(v){showLock();$('reveal').hidden=false;paint()} } });
+})();
+</script>
+
+</body></html>
