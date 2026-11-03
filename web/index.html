@@ -60,8 +60,6 @@ canvas{display:block;max-width:100%}
 .q:nth-child(3):hover,.q:nth-child(3):focus-visible{background:var(--paper);color:var(--black)}
 .q:nth-child(4):hover,.q:nth-child(4):focus-visible{background:var(--green-2);color:var(--white)}
 .q:hover .n,.q:hover p,.q:hover .go{color:inherit}
-.q .pat{position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .6s}
-.q:hover .pat{opacity:.16}
 .homebar{position:absolute;top:0;left:0;right:0;z-index:3;display:flex;justify-content:space-between;align-items:flex-start;padding:calc(18px + env(safe-area-inset-top,0px)) max(32px, env(safe-area-inset-right, 0px)) 14px max(32px, env(safe-area-inset-left, 0px));pointer-events:none;background:var(--black);border-bottom:3px solid var(--green-line);color:var(--white)}
 .homebar > .mono{color:var(--grey);padding-top:5px}
 .wm{display:inline-flex;flex-direction:column;gap:5px;line-height:1}
@@ -617,22 +615,18 @@ html.nosc,html.nosc body{overflow:hidden;height:100%}
   <div class="homebar"><span class="wm"><span class="wm-n">IRIDA</span></span><span class="mono">Elisava · DATA · 2026</span></div>
   <div class="quads">
     <a class="q" href="#investigacion">
-      <canvas class="pat" data-draw="gaze" data-seed="3" aria-hidden="true"></canvas>
       <div><div class="n mono">01</div><h2>Investi&shy;gación</h2><p>Qué revela un ojo, cómo se captura y quién lo usa. Nueve capítulos.</p></div>
       <div class="go mono">Entrar</div>
     </a>
     <a class="q" href="#experimento">
-      <canvas class="pat" data-draw="iris" data-seed="9" aria-hidden="true"></canvas>
       <div><div class="n mono">02</div><h2>Trabajo de campo</h2><p>Escanea tu ojo o responde nuestra encuesta. Tú eliges.</p></div>
       <div class="go mono">Entrar</div>
     </a>
     <a class="q" href="#proceso">
-      <canvas class="pat" data-draw="sketch" data-seed="4" aria-hidden="true"></canvas>
       <div><div class="n mono">03</div><h2>Proceso</h2><p>Diario del proyecto: decisiones, bocetos y pruebas.</p></div>
       <div class="go mono">Entrar</div>
     </a>
     <a class="q" href="#wearable">
-      <canvas class="pat" data-draw="grid" data-seed="2" aria-hidden="true"></canvas>
       <div><div class="n mono">04</div><h2>Wearable</h2><p>El objeto final que se lleva puesto.</p></div>
       <div class="go mono">Entrar</div>
     </a>
