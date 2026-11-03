@@ -393,7 +393,7 @@ footer .col{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;p
   async function loadTotal(){
     if(!GOATCOUNTER) return;
     try{
-      const r=await fetch('https://'+GOATCOUNTER+'.goatcounter.com/counter/'+GC_PATH+'.json',{cache:'no-store'});
+      const r=await fetch('https://'+GOATCOUNTER+'.goatcounter.com/counter/'+encodeURIComponent('/'+GC_PATH)+'.json',{cache:'no-store'});
       if(!r.ok) return;
       const j=await r.json(); const v=parseInt(String(j.count||'').replace(/[^0-9]/g,''),10);
       if(v>0){total=v;paint()}
@@ -402,7 +402,7 @@ footer .col{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;p
   function countArrival(){
     if(!GOATCOUNTER) return;
     try{
-      const u='https://'+GOATCOUNTER+'.goatcounter.com/count?p=%2F'+GC_PATH+'&t=UPSSS&e=true&rnd='+Math.random().toString(36).slice(2);
+      const u='https://'+GOATCOUNTER+'.goatcounter.com/count?p=%2F'+GC_PATH+'&t=UPSSS&rnd='+Math.random().toString(36).slice(2);
       if(!(navigator.sendBeacon&&navigator.sendBeacon(u))) new Image().src=u;
     }catch(e){}
   }
