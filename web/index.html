@@ -1216,14 +1216,18 @@ html.nosc,html.nosc body{overflow:hidden;height:100%}
   var GOATCOUNTER='xbaromoles';
   function gcHit(path,title){if(!GOATCOUNTER)return;try{var u='https://'+GOATCOUNTER+'.goatcounter.com/count?p='+encodeURIComponent('/'+path)+'&t='+encodeURIComponent(title||path)+'&rnd='+Math.random().toString(36).slice(2);if(!(navigator.sendBeacon&&navigator.sendBeacon(u)))new Image().src=u}catch(e){}}
   function gcCount(path){if(!GOATCOUNTER)return Promise.resolve(null);return fetch('https://'+GOATCOUNTER+'.goatcounter.com/counter/'+encodeURIComponent('/'+path)+'.json',{cache:'no-store'}).then(function(r){return r.ok?r.json():{count:'0'}}).then(function(j){return parseInt(String(j.count||'0').replace(/[^0-9]/g,''),10)||0}).catch(function(){return null})}
-  var justUps=false;
+  /* Contador exacto con Abacus (gratis, sin cuenta): suma +1 cada vez, también desde el mismo móvil.
+     Se ven los números en https://abacus.jasoncameron.dev/get/xbaromoles-irida/upsss (cambia "upsss" por la clave). */
+  var CTR='https://abacus.jasoncameron.dev',NS='xbaromoles-irida';
+  function ctr(key,hit){return fetch(CTR+'/'+(hit?'hit':'get')+'/'+NS+'/'+key,{cache:'no-store'}).then(function(r){if(r.status===404)return {value:0};if(!r.ok)throw 0;return r.json()}).then(function(j){var v=parseInt(j&&(j.value!=null?j.value:j.count),10);return isNaN(v)?null:v}).catch(function(){return null})}
+  function ctrMany(keys,hit){var out={},i=0;function next(){if(i>=keys.length)return Promise.resolve();var k=keys[i++];return ctr(k,hit).then(function(v){out[k]=v;return next()})}var w=[];for(var n=0;n<Math.min(5,keys.length);n++)w.push(next());return Promise.all(w).then(function(){return out})}
   function showUpsCount(n){if(n==null||n<1)return;var b=document.getElementById('bCount');if(!b)return;
     document.getElementById('bCountN').textContent=n;
-    document.getElementById('bCountT').textContent=n===1?'Eres la primera persona que entrega su iris sin leer la letra pequeña.':'personas, tú incluido, han entregado su iris sin leer la letra pequeña.';b.hidden=false;
+    document.getElementById('bCountT').textContent=n===1?'Eres la primera persona que entrega su iris sin leer la letra pequeña.':'veces que alguien ha entregado su iris sin leer la letra pequeña. Tú incluido.';b.hidden=false;
     var k=document.getElementById('kOjos');if(k)k.textContent=n}
-  function loadKpis(){gcCount('upsss').then(function(n){if(n==null)return;var k=document.getElementById('kOjos');if(k&&!(justUps&&+k.textContent>n))k.textContent=n});
-    gcCount('visita').then(function(n){if(n==null)return;var k=document.getElementById('kVisitas');if(k)k.textContent=Math.max(n,1)})}
-  try{if(!sessionStorage.getItem('irida-visita')){sessionStorage.setItem('irida-visita','1');gcHit('visita','Visita a la web')}}catch(e){}
+  function loadKpis(){ctr('upsss').then(function(n){if(n==null)return;var k=document.getElementById('kOjos');if(k&&!(+k.textContent>n))k.textContent=n});
+    ctr('visita').then(function(n){if(n==null)return;var k=document.getElementById('kVisitas');if(k)k.textContent=Math.max(n,1)})}
+  try{if(!sessionStorage.getItem('irida-visita')){sessionStorage.setItem('irida-visita','1');ctr('visita',true);gcHit('visita','Visita a la web')}}catch(e){}
   var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   function rng(s){return function(){s|=0;s=s+0x6D2B79F5|0;var t=Math.imul(s^s>>>15,1|s);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
   function fit(c){var r=c.getBoundingClientRect(),d=Math.min(2,window.devicePixelRatio||1),w=r.width||300,h=r.height||300;c.width=w*d;c.height=h*d;var x=c.getContext('2d');x.setTransform(d,0,0,d,0,0);return {x:x,w:w,h:h}}
@@ -1442,7 +1446,7 @@ html.nosc,html.nosc body{overflow:hidden;height:100%}
     busy=true;go.setAttribute('aria-busy','true');terms.disabled=true;viewer.classList.add('scanning');
     var steps=['Detectando pupila','Segmentando iris','Extrayendo 240 puntos'];
     for(var i=0;i<steps.length;i++){bst.textContent=steps[i]+'…';$('bReadout').textContent='Analizando · '+Math.round((i+1)/steps.length*100)+'%';await wait(800)}
-    var basePromise=gcCount('upsss');lock(true);await hackSequence();seenSet(true);gcHit('upsss','UPSSS');justUps=true;basePromise.then(function(n){showUpsCount(n==null?null:n+1)});$('bUps').hidden=false;$('bExplain').focus({preventScroll:true})});
+    var upsP=ctr('upsss',true);gcHit('upsss','UPSSS');lock(true);await hackSequence();seenSet(true);upsP.then(showUpsCount);$('bUps').hidden=false;$('bExplain').focus({preventScroll:true})});
   $('bExplain').addEventListener('click',function(){$('bUps').hidden=true;lock(false);if(qrMode){qrMode=false;document.body.classList.remove('qr');document.getElementById('topbar').hidden=false;document.getElementById('foot').hidden=false;document.body.classList.add('sub');try{history.replaceState(null,'','#experimento')}catch(e){}}bOn=false;if(photo){URL.revokeObjectURL(photo);photo=null}showDebrief()});
   $('bAgain').addEventListener('click',function(){seenSet(false);window.scrollTo(0,0);showBait()});
 
@@ -1461,36 +1465,35 @@ html.nosc,html.nosc body{overflow:hidden;height:100%}
   document.querySelectorAll('#experimento [data-back]').forEach(function(b){b.addEventListener('click',showChoose)});
 
   var MKEY='irida-encuesta';
-  try{var ms=localStorage.getItem(MKEY);if(ms)mine=JSON.parse(ms)}catch(e){}
-  var agg=null,justSent=false;
+  var agg=null;
   async function initDb(){if(sready)return;sready=true;await loadAgg();renderResults()}
-  async function loadAgg(){if(!GOATCOUNTER){agg=null;return}
-    var jobs=[],out={};QS.forEach(function(q){out[q.k]=q.o.map(function(){return 0});q.o.forEach(function(o,i){jobs.push(gcCount('encuesta-'+q.k+'-'+i).then(function(n){if(n!=null)out[q.k][i]=n}))})});
-    jobs.push(gcCount('encuesta-total').then(function(n){out._n=n||0}));
-    await Promise.all(jobs);agg=out}
+  function svKeys(){var k=['enc-total'];QS.forEach(function(q){q.o.forEach(function(o,i){k.push('enc-'+q.k+'-'+i)})});return k}
+  async function loadAgg(){var r=await ctrMany(svKeys(),false);if(r['enc-total']==null){agg=null;return}
+    var out={_n:r['enc-total']||0};QS.forEach(function(q){out[q.k]=q.o.map(function(o,i){return r['enc-'+q.k+'-'+i]||0})});agg=out}
   function readForm(){var a={},miss=[];QS.forEach(function(q){var el=svForm.querySelector('input[name="'+q.k+'"]:checked');var fs=svForm.querySelector('.sv-q[data-k="'+q.k+'"]');if(el){a[q.k]=+el.value;fs.classList.remove('miss')}else{miss.push(fs);fs.classList.add('miss')}});return {a:a,miss:miss}}
   function fillForm(a){QS.forEach(function(q){if(a[q.k]==null)return;var el=svForm.querySelector('input[name="'+q.k+'"][value="'+a[q.k]+'"]');if(el)el.checked=true})}
   svForm.addEventListener('change',function(e){var fs=e.target.closest('.sv-q');if(fs)fs.classList.remove('miss');svMsg.textContent=''});
   svForm.addEventListener('submit',async function(e){e.preventDefault();var r=readForm();
     if(r.miss.length){svMsg.textContent='Te faltan '+r.miss.length+' pregunta'+(r.miss.length>1?'s':'');r.miss[0].scrollIntoView({behavior:reduce?'auto':'smooth',block:'center'});return}
-    var send=$('svSend');send.setAttribute('aria-busy','true');var first=!mine;mine=r.a;writeOk=!!GOATCOUNTER;
-    try{localStorage.setItem(MKEY,JSON.stringify(mine))}catch(err){}
-    if(GOATCOUNTER&&first){justSent=true;gcHit('encuesta-total','Encuesta');QS.forEach(function(q){gcHit('encuesta-'+q.k+'-'+mine[q.k],q.k+': '+q.o[mine[q.k]])});await loadAgg()}
+    var send=$('svSend');send.setAttribute('aria-busy','true');mine=r.a;
+    gcHit('encuesta-total','Encuesta');
+    await ctrMany(['enc-total'].concat(QS.map(function(q){return 'enc-'+q.k+'-'+mine[q.k]})),true);
+    await loadAgg();
     send.removeAttribute('aria-busy');showResults()});
   $('svEdit').addEventListener('click',function(){svRes.hidden=true;svForm.hidden=false;$('svHead').hidden=false;window.scrollTo(0,0)});
   function showResults(){svForm.hidden=true;svRes.hidden=false;$('svHead').hidden=true;renderResults();window.scrollTo(0,0)}
 
   function renderResults(){if(svRes.hidden)return;
-    var shared=!!(agg&&GOATCOUNTER);
-    var total=shared?Math.max((agg._n||0)+(justSent?1:0),mine?1:0):(mine?1:0);
+    var shared=!!agg;
+    var total=shared?Math.max(agg._n||0,mine?1:0):(mine?1:0);
     $('svN').textContent=total;
     var note=$('svNote');
-    note.textContent=shared?'Tu respuesta aparece en verde. Resultados de todas las personas que han respondido; pueden tardar unos minutos en actualizarse.':'Ahora mismo solo ves tu respuesta. Los resultados compartidos se activarán pronto.';
+    note.textContent=shared?'Tu respuesta aparece en verde. Resultados de todas las respuestas enviadas.':'Ahora mismo solo ves tu respuesta. Los resultados compartidos se activarán pronto.';
     var box=$('svBars');box.textContent='';
     if(!total){var em=document.createElement('p');em.className='sv-empty';em.textContent='Aún no hay respuestas. Responde la encuesta y serás la primera persona.';box.appendChild(em);return}
     QS.forEach(function(q,qi){var counts=shared?agg[q.k].slice():q.o.map(function(){return 0}),n=0;
       if(!shared&&mine)counts[mine[q.k]]=1;
-      if(shared&&mine&&(justSent||!counts.some(function(c){return c>0})))counts[mine[q.k]]++;
+      if(shared&&mine&&!counts[mine[q.k]])counts[mine[q.k]]=1;
       counts.forEach(function(c){n+=c});
       var max=Math.max.apply(null,counts);
       var d=document.createElement('div');d.className='sv-r';
