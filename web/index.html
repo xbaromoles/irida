@@ -373,6 +373,9 @@ footer a{text-decoration:none}
 .r-msg{margin:0;font-family:var(--display);font-stretch:125%;font-weight:800;text-transform:uppercase;font-size:clamp(22px,2.4vw,34px);line-height:1.05}
 .r-msg .thin{display:block;margin-top:4px;color:var(--grey);font-weight:200}
 .r-note{margin:0;color:#D9DAD6;font-size:17px;border-top:1px solid #2b2b29;padding-top:16px}
+.r-count{display:flex;align-items:baseline;gap:14px;border-top:1px solid #2b2b29;padding-top:16px}
+.r-count b{font-family:var(--display);font-stretch:125%;font-weight:800;font-size:clamp(40px,4vw,56px);line-height:.9;color:var(--signal);font-variant-numeric:tabular-nums;flex:none}
+.r-count span{font-size:15px;line-height:1.4;color:#D9DAD6}
 .bt-btn.light{background:var(--signal);color:var(--black)}
 
 /* explicación */
@@ -1026,6 +1029,7 @@ html.nosc,html.nosc body{overflow:hidden;height:100%}
       <div class="ups-wrap"><h2 class="ups" data-t="UPSSS">UPSSS</h2></div>
       <div class="r-bottom">
         <p class="r-msg">No te vamos a decir nada.<span class="thin">Gracias por regalarnos tu ojo.</span></p>
+        <div class="r-count" id="bCount" hidden><b id="bCountN"></b><span id="bCountT"></span></div>
         <p class="r-note">Puedes cambiar una contraseña. No puedes cambiar tu iris. Acabas de entregarlo a cambio de una promesa, sin leer la letra pequeña.</p>
         <div class="ups-actions"><button type="button" class="bt-btn light" id="bExplain"><span>¿Qué acaba de pasar?</span><span aria-hidden="true">→</span></button><a class="bt-btn outline" href="#inicio"><span>Ir a la página de inicio</span><span aria-hidden="true">→</span></a></div>
       </div>
@@ -1093,9 +1097,9 @@ html.nosc,html.nosc body{overflow:hidden;height:100%}
           <div class="rv"><span class="mono">Paso 4</span><h4>Revelación</h4><p>Simulación de robo, “UPSSS” y explicación del experimento.</p></div>
         </div>
         <div class="db-kpis">
-          <div class="rv"><b>—</b><span class="mono">Personas que subieron su ojo</span></div>
+          <div class="rv"><b id="kOjos">—</b><span class="mono">Personas que subieron su ojo</span></div>
           <div class="rv"><b>—%</b><span class="mono">Aceptaron sin leer los términos</span></div>
-          <div class="rv"><b>—</b><span class="mono">Visitas a la web</span></div>
+          <div class="rv"><b id="kVisitas">—</b><span class="mono">Visitas a la web</span></div>
         </div>
         <p class="mono" style="color:var(--sage);margin:24px 0 0">Resultados pendientes · añadir al cerrar el experimento</p>
         <div class="db-gal">
@@ -1212,6 +1216,14 @@ html.nosc,html.nosc body{overflow:hidden;height:100%}
   var GOATCOUNTER='xbaromoles';
   function gcHit(path,title){if(!GOATCOUNTER)return;try{var u='https://'+GOATCOUNTER+'.goatcounter.com/count?p='+encodeURIComponent('/'+path)+'&t='+encodeURIComponent(title||path)+'&rnd='+Math.random().toString(36).slice(2);if(!(navigator.sendBeacon&&navigator.sendBeacon(u)))new Image().src=u}catch(e){}}
   function gcCount(path){if(!GOATCOUNTER)return Promise.resolve(null);return fetch('https://'+GOATCOUNTER+'.goatcounter.com/counter/'+encodeURIComponent('/'+path)+'.json',{cache:'no-store'}).then(function(r){return r.ok?r.json():{count:'0'}}).then(function(j){return parseInt(String(j.count||'0').replace(/[^0-9]/g,''),10)||0}).catch(function(){return null})}
+  var justUps=false;
+  function showUpsCount(n){if(n==null||n<1)return;var b=document.getElementById('bCount');if(!b)return;
+    document.getElementById('bCountN').textContent=n;
+    document.getElementById('bCountT').textContent=n===1?'Eres la primera persona que entrega su iris sin leer la letra pequeña.':'personas, tú incluido, han entregado su iris sin leer la letra pequeña.';b.hidden=false;
+    var k=document.getElementById('kOjos');if(k)k.textContent=n}
+  function loadKpis(){gcCount('upsss').then(function(n){if(n==null)return;var k=document.getElementById('kOjos');if(k&&!(justUps&&+k.textContent>n))k.textContent=n});
+    gcCount('visita').then(function(n){if(n==null)return;var k=document.getElementById('kVisitas');if(k)k.textContent=Math.max(n,1)})}
+  try{if(!sessionStorage.getItem('irida-visita')){sessionStorage.setItem('irida-visita','1');gcHit('visita','Visita a la web')}}catch(e){}
   var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   function rng(s){return function(){s|=0;s=s+0x6D2B79F5|0;var t=Math.imul(s^s>>>15,1|s);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
   function fit(c){var r=c.getBoundingClientRect(),d=Math.min(2,window.devicePixelRatio||1),w=r.width||300,h=r.height||300;c.width=w*d;c.height=h*d;var x=c.getContext('2d');x.setTransform(d,0,0,d,0,0);return {x:x,w:w,h:h}}
@@ -1382,7 +1394,7 @@ html.nosc,html.nosc body{overflow:hidden;height:100%}
   $('bTick').innerHTML=th;
 
   function showBait(){stopArt();document.documentElement.classList.remove('nosc');choose.hidden=true;survey.hidden=true;bait.hidden=false;debrief.hidden=true;resetForm();requestAnimationFrame(function(){bSetup();bOn=true;requestAnimationFrame(bDraw)})}
-  function showDebrief(){bOn=false;stopArt();document.documentElement.classList.remove('nosc');choose.hidden=true;survey.hidden=true;bait.hidden=true;debrief.hidden=false;window.scrollTo(0,0);requestAnimationFrame(function(){armReveal(debrief)})}
+  function showDebrief(){loadKpis();bOn=false;stopArt();document.documentElement.classList.remove('nosc');choose.hidden=true;survey.hidden=true;bait.hidden=true;debrief.hidden=false;window.scrollTo(0,0);requestAnimationFrame(function(){armReveal(debrief)})}
   function expEnter(){if(qrMode){if(seenGet())showDebrief();else showBait()}else showChoose()}
   function expLeave(){bOn=false;if(typeof stopArt==='function')stopArt()}
   window.addEventListener('resize',function(){if(current==='experimento'&&!bait.hidden){bSetup();if(reduce)bDraw(0)}});
@@ -1430,7 +1442,7 @@ html.nosc,html.nosc body{overflow:hidden;height:100%}
     busy=true;go.setAttribute('aria-busy','true');terms.disabled=true;viewer.classList.add('scanning');
     var steps=['Detectando pupila','Segmentando iris','Extrayendo 240 puntos'];
     for(var i=0;i<steps.length;i++){bst.textContent=steps[i]+'…';$('bReadout').textContent='Analizando · '+Math.round((i+1)/steps.length*100)+'%';await wait(800)}
-    lock(true);await hackSequence();seenSet(true);gcHit('upsss','UPSSS');$('bUps').hidden=false;$('bExplain').focus({preventScroll:true})});
+    var basePromise=gcCount('upsss');lock(true);await hackSequence();seenSet(true);gcHit('upsss','UPSSS');justUps=true;basePromise.then(function(n){showUpsCount(n==null?null:n+1)});$('bUps').hidden=false;$('bExplain').focus({preventScroll:true})});
   $('bExplain').addEventListener('click',function(){$('bUps').hidden=true;lock(false);if(qrMode){qrMode=false;document.body.classList.remove('qr');document.getElementById('topbar').hidden=false;document.getElementById('foot').hidden=false;document.body.classList.add('sub');try{history.replaceState(null,'','#experimento')}catch(e){}}bOn=false;if(photo){URL.revokeObjectURL(photo);photo=null}showDebrief()});
   $('bAgain').addEventListener('click',function(){seenSet(false);window.scrollTo(0,0);showBait()});
 
@@ -1450,7 +1462,7 @@ html.nosc,html.nosc body{overflow:hidden;height:100%}
 
   var MKEY='irida-encuesta';
   try{var ms=localStorage.getItem(MKEY);if(ms)mine=JSON.parse(ms)}catch(e){}
-  var agg=null;
+  var agg=null,justSent=false;
   async function initDb(){if(sready)return;sready=true;await loadAgg();renderResults()}
   async function loadAgg(){if(!GOATCOUNTER){agg=null;return}
     var jobs=[],out={};QS.forEach(function(q){out[q.k]=q.o.map(function(){return 0});q.o.forEach(function(o,i){jobs.push(gcCount('encuesta-'+q.k+'-'+i).then(function(n){if(n!=null)out[q.k][i]=n}))})});
@@ -1463,14 +1475,14 @@ html.nosc,html.nosc body{overflow:hidden;height:100%}
     if(r.miss.length){svMsg.textContent='Te faltan '+r.miss.length+' pregunta'+(r.miss.length>1?'s':'');r.miss[0].scrollIntoView({behavior:reduce?'auto':'smooth',block:'center'});return}
     var send=$('svSend');send.setAttribute('aria-busy','true');var first=!mine;mine=r.a;writeOk=!!GOATCOUNTER;
     try{localStorage.setItem(MKEY,JSON.stringify(mine))}catch(err){}
-    if(GOATCOUNTER&&first){gcHit('encuesta-total','Encuesta');QS.forEach(function(q){gcHit('encuesta-'+q.k+'-'+mine[q.k],q.k+': '+q.o[mine[q.k]])});await new Promise(function(res){setTimeout(res,1500)});await loadAgg()}
+    if(GOATCOUNTER&&first){justSent=true;gcHit('encuesta-total','Encuesta');QS.forEach(function(q){gcHit('encuesta-'+q.k+'-'+mine[q.k],q.k+': '+q.o[mine[q.k]])});await loadAgg()}
     send.removeAttribute('aria-busy');showResults()});
   $('svEdit').addEventListener('click',function(){svRes.hidden=true;svForm.hidden=false;$('svHead').hidden=false;window.scrollTo(0,0)});
   function showResults(){svForm.hidden=true;svRes.hidden=false;$('svHead').hidden=true;renderResults();window.scrollTo(0,0)}
 
   function renderResults(){if(svRes.hidden)return;
     var shared=!!(agg&&GOATCOUNTER);
-    var total=shared?Math.max(agg._n||0,mine?1:0):(mine?1:0);
+    var total=shared?Math.max((agg._n||0)+(justSent?1:0),mine?1:0):(mine?1:0);
     $('svN').textContent=total;
     var note=$('svNote');
     note.textContent=shared?'Tu respuesta aparece en verde. Resultados de todas las personas que han respondido; pueden tardar unos minutos en actualizarse.':'Ahora mismo solo ves tu respuesta. Los resultados compartidos se activarán pronto.';
@@ -1478,7 +1490,7 @@ html.nosc,html.nosc body{overflow:hidden;height:100%}
     if(!total){var em=document.createElement('p');em.className='sv-empty';em.textContent='Aún no hay respuestas. Responde la encuesta y serás la primera persona.';box.appendChild(em);return}
     QS.forEach(function(q,qi){var counts=shared?agg[q.k].slice():q.o.map(function(){return 0}),n=0;
       if(!shared&&mine)counts[mine[q.k]]=1;
-      if(shared&&mine&&!counts.some(function(c){return c>0}))counts[mine[q.k]]=1;
+      if(shared&&mine&&(justSent||!counts.some(function(c){return c>0})))counts[mine[q.k]]++;
       counts.forEach(function(c){n+=c});
       var max=Math.max.apply(null,counts);
       var d=document.createElement('div');d.className='sv-r';
